@@ -1,6 +1,7 @@
 import csv
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+from evacore.models import Profile
 
 User = get_user_model()
 
@@ -16,14 +17,36 @@ class Command(BaseCommand):
         with open(archivo_csv, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
-                # Asegúrate de que los nombres de las columnas coincidan con los campos del modelo
-                user = User.objects.create_user(username=row['username'], password=row['password'], nivel=row['nivel'])
-                self.stdout.write(self.style.SUCCESS(f'Usuario "{user.username}" creado con éxito.'))
+                try:
+                    # Agrega este print para ver el contenido de la fila
+                    print(row)
 
+                    # Obtén o crea el usuario
+                    user, created = User.objects.get_or_create(
+                        username=row['id'],
+                        defaults={'password': row['contraseña']}
+                    )
 
+                    # Obtén o crea el perfil asociado y establece el nivel
+                    profile, profile_created = Profile.objects.get_or_create(
+                        user=user,
+                        defaults={'full_name': row['full_name'], 'nivel': row['nivel']}
+                    )
 
-#Deberas crear un CSV con el siguiente formato y ejecutar el comando python manage.py cargar_usuarios ruta_al_archivo.csv
-#username,password,nivel
-#usuario1,contraseña1,AGENTE
-#usuario2,contraseña2,SUPERVISOR
-#usuario3,contraseña3,GERENTE
+                    # Establecer al jefe directo si está presente
+                    jefe_directo_id = row['id_jefedirecto']
+                    if jefe_directo_id:
+                        try:
+                            jefe_directo = User.objects.get(username=jefe_directo_id).profile
+                        except User.DoesNotExist:
+                            jefe_directo = None
+                        
+                        if jefe_directo:
+                            profile.jefe_directo = jefe_directo
+                            profile.save()
+
+                    self.stdout.write(self.style.SUCCESS(f'Usuario "{user.username}" creado con éxito.'))
+                except Exception as e:
+                    error_message = f'Error al crear usuario: {str(e)}'
+                    self.stdout.write(self.style.ERROR(error_message))
+                    raise e  # Agregamos un raise para que se imprima el traceback completo del error

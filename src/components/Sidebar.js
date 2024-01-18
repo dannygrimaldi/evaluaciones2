@@ -19,14 +19,19 @@ const Sidebar = () => {
   const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user, logoutUser, authTokens} = useContext(AuthContext);
+  const [userType, setUserType] = useState('');
+
 
     let [profile, setProfile] = useState([])
 
     useEffect(() => {
-        getProfile()
-    },[])
+      if (authTokens && authTokens.access) {
+        getProfile();
+      }
+    }, []); // Sin dependencias, se ejecutará una vez al montar el componente
+    
 
-    const getProfile = async() => {
+    /* const getProfile = async() => {
         let response = await fetch('/profile', {
         method: 'GET',
         headers:{
@@ -44,7 +49,43 @@ const Sidebar = () => {
     }
   const redirectToLogin = () => {
     navigate('/login');
+  }; */
+  const getProfile = async () => {
+    try {
+      let response = await fetch('/get_profile/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + String(authTokens.access),
+        },
+      });
+  
+      if (response.status === 200) {
+        let data = await response.json();
+        console.log(data);
+  
+        // Refactorización para evitar código duplicado
+        handleUserProfile(data);
+      } else if (response.status === 401) {
+        // Manejar la lógica de desconexión o redirección a la página de inicio de sesión
+        logoutUser();
+      } else {
+        console.error('Error al obtener el perfil:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud de perfil:', error);
+    }
   };
+  
+  const handleUserProfile = (data) => {
+    const userType = data.user_type;
+    setUserType(userType);
+    console.log('Tipo de usuario:', userType);
+  
+    // Actualizar el estado si es necesario
+    setProfile(data);
+  };
+  
   
   const Menus = [
     { title: 'Dashboard', path: '/dashboard', src: <AiFillPieChart /> },
@@ -56,6 +97,7 @@ const Sidebar = () => {
   return (
     <>
     <h1> {user ? user.username : ''}</h1>
+    <p>Tipo de usuario: {userType}</p>
     <h1>{user ? profile.first_name: ''}</h1>
     <h1>{user ? profile.last_name: ''}</h1>
     <h1>{user ? profile.nivel: ''}</h1>

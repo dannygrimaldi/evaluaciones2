@@ -242,14 +242,17 @@ def get_profile(request):
     user = request.user
     profile = user.profile
     serializer = ProfileSerializer(profile, many=False)
-    return Response(serializer.data)
- """
+    return Response(serializer.data) """
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_profile(request):
     user = request.user
+    print(f"Esta línea se ejecuta. Usuario: {user.username}")
     profile = user.profile
+    # Imprimir información en la terminal donde se ejecuta Django
+    print(f"Nivel del usuario {user.username}: {profile.nivel}")
     serializer = ProfileSerializer(profile, many=False)
     profile_data = serializer.data
     profile_data['user_type'] = profile.nivel

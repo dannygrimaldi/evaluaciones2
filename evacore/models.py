@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Profile(models.Model):
     NIVEL_CHOICES = [
         ('AGENTE', 'Agente'),
@@ -9,11 +8,11 @@ class Profile(models.Model):
         ('GERENTE', 'Gerente'),
         ('SUBDIRECTOR', 'Subdirector'),
     ]
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    nivel = models.CharField(max_length=50, choices=NIVEL_CHOICES, default='AGENTE')
+    nivel = models.CharField(max_length=50, choices=NIVEL_CHOICES, default='AGENTE', blank=False)
     full_name = models.CharField(max_length=100)
     jefe_directo = models.OneToOneField('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='subalternos')
-    
+
     def __str__(self):
         return self.user.username
-

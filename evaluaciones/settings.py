@@ -24,6 +24,23 @@ ALLOWED_HOSTS = ['192.168.100.10','localhost','127.0.0.1',]
 
 #AUTH_USER_MODEL = 'evacore.CustomUser'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
+
+
+
+
 # Application definition
 
 Django_APPS = [

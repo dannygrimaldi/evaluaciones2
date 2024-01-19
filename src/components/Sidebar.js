@@ -98,9 +98,9 @@ const Sidebar = () => {
     <>
     <h1> {user ? user.username : ''}</h1>
     <p>Tipo de usuario: {userType}</p>
+    {/* <h1>{user ? profile.nivel: ''}</h1> */}
     <h1>{user ? profile.first_name: ''}</h1>
     <h1>{user ? profile.last_name: ''}</h1>
-    <h1>{user ? profile.nivel: ''}</h1>
 
 
 

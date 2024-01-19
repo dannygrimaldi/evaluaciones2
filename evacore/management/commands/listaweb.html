@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .task-list {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .task-item {
+            list-style-type: none;
+            margin: 0;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .task-item .task-text {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="task-list">
+    <ul>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Cambiar sábanas</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Acomodar pantalones</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Sacudir sillón</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Poner el colchón inflable</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Bañar a nena</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Lavar trastes</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Bañar a Dany</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Lavar baño</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Acomodar despensa</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Hacer lista de cuidados de nena</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Comprar pollo para la nena</span>
+        </li>
+        <li class="task-item">
+            <input type="checkbox">
+            <span class="task-text">Hacer maletas</span>
+        </li>
+        <!-- Puedes agregar más elementos de la lista según sea necesario -->
+    </ul>
+</div>
+
+</body>
+</html>
+

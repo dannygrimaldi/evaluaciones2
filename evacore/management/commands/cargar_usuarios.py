@@ -26,7 +26,10 @@ class Command(BaseCommand):
                         username=row['id'],
                         defaults={'password': row['contraseña']}
                     )
-
+                    # Si el usuario es nuevo, establece la contraseña de forma segura
+                    if created:
+                        user.set_password(row['contraseña'])
+                        user.save()
                     # Obtén o crea el perfil asociado y establece el nivel
                     profile, profile_created = Profile.objects.get_or_create(
                         user=user,
@@ -44,6 +47,7 @@ class Command(BaseCommand):
                         if jefe_directo:
                             profile.jefe_directo = jefe_directo
                             profile.save()
+                        print(f'Usuario: {user.username}, Perfil: {profile.full_name}, Nivel: {profile.nivel}, Jefe Directo: {profile.jefe_directo}')
 
                     self.stdout.write(self.style.SUCCESS(f'Usuario "{user.username}" creado con éxito.'))
                 except Exception as e:

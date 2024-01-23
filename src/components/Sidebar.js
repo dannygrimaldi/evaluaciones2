@@ -73,14 +73,6 @@ const Sidebar = () => {
     }
   };
   
-  
-  /* const Menus = [
-    { title: 'Dashboard', path: '/dashboard', src: <AiFillPieChart /> },
-    { title: 'Course', path: '/course', src: <SiFuturelearn /> },
-    { title: 'Profile', path: '/profile', src: <CgProfile /> },
-    { title: user ? 'Cerrar sesión' : 'Iniciar sesión', path: '/login', src: user ? <IoIosLogOut  /> : <IoIosLogIn /> , gap: 'true' },
-
-  ] */
   let Menus = [
     { title: 'Dashboard', path: '/dashboard', src: <AiFillPieChart /> },
 
@@ -108,9 +100,6 @@ const Sidebar = () => {
   // y así sucesivamente para los diferentes tipos de usuario
   return (
     <>
-   
-
-
       <div
         className={`${
           open ? 'w-60' : 'w-fit'

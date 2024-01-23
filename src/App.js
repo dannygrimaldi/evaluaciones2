@@ -16,10 +16,10 @@ function App() {
             <AuthProvider>
             <Layout>
                 <Routes>
-                    <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>} />
-                    <Route path='/dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-                    <Route path='/course' element={<Course />} />
-                    <Route path='/profile' element={<Profile />} />
+                    <Route path='/' element={<Home />} />
+                    <Route path='/dashboard' element={<Dashboard />} />
+                    <Route path='/course' element={<PrivateRoute><Course /></PrivateRoute>} />
+                    <Route path='/profile' element={<PrivateRoute><Profile /></PrivateRoute>} />
                     <Route path='/login' element={<Login />} />
                 </Routes>
             </Layout>

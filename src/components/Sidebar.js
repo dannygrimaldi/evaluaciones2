@@ -24,84 +24,91 @@ const Sidebar = () => {
 
     let [profile, setProfile] = useState([])
 
-    useEffect(() => {
-      if (authTokens && authTokens.access) {
-        getProfile();
+    const getProfile = async () => {
+      if (!user || !authTokens.access) {
+        // Limpia los datos del perfil si el usuario no está autenticado
+        handleUserProfile(null);
+        return;
       }
-    }, []); // Sin dependencias, se ejecutará una vez al montar el componente
-    
 
-    /* const getProfile = async() => {
-        let response = await fetch('/profile', {
-        method: 'GET',
-        headers:{
+      try {
+        let response = await fetch('http://localhost:8000/get_profile/', {
+          method: 'GET',
+          headers: {
             'Content-Type': 'application/json',
-            'Authorization':'Bearer ' + String(authTokens.access)
+            'Authorization': 'Bearer ' + String(authTokens.access),
+          },
+        });
+
+        if (response.status === 200) {
+          let data = await response.json();
+          console.log(data);
+
+          // Refactorización para evitar código duplicado
+          handleUserProfile(data);
+        } else if (response.status === 401) {
+          // Manejar la lógica de desconexión o redirección a la página de inicio de sesión
+          logoutUser();
+        } else {
+          console.error('Error al obtener el perfil:', response.statusText);
         }
-        })
-        let data = await response.json()
-        console.log(data)
-        if(response.status === 200){
-            setProfile(data)
-        } else if(response.statusText === 'Unauthorized'){
-            logoutUser()
-        }
-    }
-  const redirectToLogin = () => {
-    navigate('/login');
-  }; */
-  const getProfile = async () => {
-    try {
-      let response = await fetch('/get_profile/', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + String(authTokens.access),
-        },
-      });
-  
-      if (response.status === 200) {
-        let data = await response.json();
-        console.log(data);
-  
-        // Refactorización para evitar código duplicado
-        handleUserProfile(data);
-      } else if (response.status === 401) {
-        // Manejar la lógica de desconexión o redirección a la página de inicio de sesión
-        logoutUser();
-      } else {
-        console.error('Error al obtener el perfil:', response.statusText);
+      } catch (error) {
+        console.error('Error en la solicitud de perfil:', error);
       }
-    } catch (error) {
-      console.error('Error en la solicitud de perfil:', error);
-    }
-  };
+    };
+
+    useEffect(() => {
+      getProfile();
+    }, [user]);
   
   const handleUserProfile = (data) => {
-    const userType = data.user_type;
-    setUserType(userType);
-    console.log('Tipo de usuario:', userType);
-  
-    // Actualizar el estado si es necesario
-    setProfile(data);
+    if (data) {
+      const userType = data.user_type;
+      setUserType(userType);
+      console.log('Tipo de usuario:', userType);
+    } else {
+      // Limpia userType si data es null
+      setUserType(null);
+      console.log('El usuario ha cerrado sesión');
+    }
   };
   
   
-  const Menus = [
+  /* const Menus = [
     { title: 'Dashboard', path: '/dashboard', src: <AiFillPieChart /> },
     { title: 'Course', path: '/course', src: <SiFuturelearn /> },
     { title: 'Profile', path: '/profile', src: <CgProfile /> },
     { title: user ? 'Cerrar sesión' : 'Iniciar sesión', path: '/login', src: user ? <IoIosLogOut  /> : <IoIosLogIn /> , gap: 'true' },
 
-  ]
+  ] */
+  let Menus = [
+    { title: 'Dashboard', path: '/dashboard', src: <AiFillPieChart /> },
+
+  ];
+
+  if (user) {
+    Menus.push({ title: 'Profile', path: '/profile', src: <CgProfile /> });
+  }
+
+  if (userType === 'SUBDIRECTOR') {
+    Menus.push({ title: 'Vista Subdirector', path: '/subdirector', src: <SiFuturelearn /> });
+    Menus.push({ title: 'Vista Gerente', path: '/gerente', src: <SiFuturelearn /> });
+    Menus.push({ title: 'Vista Supervisor', path: '/supervisor', src: <SiFuturelearn /> });
+  } else if (userType === 'GERENTE') {
+    Menus.push({ title: 'Vista Gerente', path: '/gerente', src: <SiFuturelearn /> });
+    Menus.push({ title: 'Vista Supervisor', path: '/supervisor', src: <SiFuturelearn /> });
+  } else if (userType === 'SUPERVISOR') {
+    Menus.push({ title: 'Vista Supervisor', path: '/supervisor', src: <SiFuturelearn /> });
+  }
+
+  // Agrega el elemento de iniciar/cerrar sesión al final
+
+  Menus.push({ title: user ? 'Cerrar sesión' : 'Iniciar sesión', path: '/login', src: user ? <IoIosLogOut  /> : <IoIosLogIn /> , gap: 'true' });
+
+  // y así sucesivamente para los diferentes tipos de usuario
   return (
     <>
-    <h1> {user ? user.username : ''}</h1>
-    <p>Tipo de usuario: {userType}</p>
-    {/* <h1>{user ? profile.nivel: ''}</h1> */}
-    <h1>{user ? profile.first_name: ''}</h1>
-    <h1>{user ? profile.last_name: ''}</h1>
-
+   
 
 
       <div

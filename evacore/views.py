@@ -230,7 +230,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
         token['username'] = user.username
         return token
 
@@ -250,11 +249,8 @@ def get_profile(request):
 @permission_classes([IsAuthenticated])
 def get_perfil(request):
     user = request.user
-    print(f"Esta línea se ejecuta. Usuario: {user.username}")
     profile = user.profile
-    print(f"Nivel del usuario {user.username}: {profile.nivel}")
     serializer = ProfileSerializer(profile, many=False)
     profile_data = serializer.data
     profile_data['user_type'] = profile.nivel
-    logger.debug(f"Esta línea se ejecuta. Usuario: {user.username}")
     return Response(profile_data)

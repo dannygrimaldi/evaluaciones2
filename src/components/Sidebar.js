@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import AuthContext  from '../context/AuthContext';
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, /* useNavigate */ } from 'react-router-dom'
 import { BsArrowLeftCircle } from 'react-icons/bs'
 import { AiFillPieChart } from 'react-icons/ai'
 import { SiFuturelearn } from 'react-icons/si'
@@ -16,14 +16,14 @@ const Sidebar = () => {
   const [open, setOpen] = useState(true)
   const [mobileMenu, setMobileMenu] = useState(false)
   const location = useLocation();
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user, logoutUser, authTokens} = useContext(AuthContext);
   const [userType, setUserType] = useState('');
 
 
-    let [profile, setProfile] = useState([])
-
+/*     let [profile, setProfile] = useState([])
+ */
     const getProfile = async () => {
       if (!user || !authTokens.access) {
         // Limpia los datos del perfil si el usuario no está autenticado
@@ -59,7 +59,7 @@ const Sidebar = () => {
 
     useEffect(() => {
       getProfile();
-    }, [user]);
+    }, [user, authTokens, getProfile]);
   
   const handleUserProfile = (data) => {
     if (data) {
@@ -115,9 +115,7 @@ const Sidebar = () => {
           <div className={`flex ${open && 'gap-x-4'} items-center transition-transform transform hover:scale-110`}>
             <Logo className='pl-2' />
             {open && (
-              /* <span className='text-xl font-medium whitespace-nowrap dark:text-white'>
-                Goal Quest
-              </span> */
+
               <Letterslogo/>
             )}
           </div>

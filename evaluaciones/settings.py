@@ -20,7 +20,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = ['192.168.100.10','localhost','127.0.0.1',]
+ALLOWED_HOSTS = ['192.168.100.10','localhost','127.0.0.1','*','172.20.40.168']
 
 #AUTH_USER_MODEL = 'evacore.CustomUser'
 

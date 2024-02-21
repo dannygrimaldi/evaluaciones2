@@ -32,7 +32,7 @@ const Sidebar = () => {
       }
 
       try {
-        let response = await fetch('http://localhost:8000/get_profile/', {
+        let response = await fetch('/get_profile/', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
